@@ -1,0 +1,22 @@
+@startuml packages
+set namespaceSeparator none
+package "docker" as docker {
+}
+package "docker.decorators" as docker.decorators {
+}
+package "docker.decorators.docker" as docker.decorators.docker {
+}
+package "docker.hooks" as docker.hooks {
+}
+package "docker.hooks.docker" as docker.hooks.docker {
+}
+package "docker.operators" as docker.operators {
+}
+package "docker.operators.docker" as docker.operators.docker {
+}
+package "docker.operators.docker_swarm" as docker.operators.docker_swarm {
+}
+docker.hooks.docker --> docker
+docker.operators.docker --> docker
+docker.operators.docker_swarm --> docker
+@enduml

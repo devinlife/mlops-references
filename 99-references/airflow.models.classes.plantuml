@@ -1,0 +1,1288 @@
+@startuml classes
+set namespaceSeparator none
+class "AbstractOperator" as airflow.models.abstractoperator.AbstractOperator {
+  HIDE_ATTRS_FROM_UI : ClassVar[frozenset[str]]
+  dag_id
+  extra_links
+  global_operator_extra_link_dict
+  inherits_from_empty_operator
+  inlets : list
+  node_id
+  operator_class : type[BaseOperator] | dict[str, Any]
+  operator_extra_link_dict
+  operator_extra_links : Collection[BaseOperatorLink]
+  operator_name
+  outlets : list
+  owner : str
+  priority_weight : int
+  priority_weight_total
+  task_id : str
+  task_type
+  weight_rule : str
+  expand_mapped_task(run_id: str) -> tuple[Sequence[TaskInstance], int]
+  get_closest_mapped_task_group() -> MappedTaskGroup | None
+  get_dag() -> DAG | None
+  get_direct_relative_ids(upstream: bool) -> set[str]
+  get_extra_links(ti: TaskInstance, link_name: str) -> str | None
+  get_flat_relative_ids() -> set[str]
+  get_flat_relatives(upstream: bool) -> Collection[Operator]
+  get_mapped_ti_count(run_id: str) -> int
+  get_parse_time_mapped_ti_count() -> int
+  get_template_env(dag: DAG | None) -> jinja2.Environment
+  iter_mapped_dependants() -> Iterator[MappedOperator | MappedTaskGroup]
+  iter_mapped_task_groups() -> Iterator[MappedTaskGroup]
+  render_template_fields(context: Context, jinja_env: jinja2.Environment | None) -> None
+  unmap(resolve: None | dict[str, Any] | tuple[Context, Session]) -> BaseOperator
+}
+class "BaseOperator" as airflow.models.baseoperator.BaseOperator {
+  dag
+  dag : NoneType
+  depends_on_past : bool
+  deps : frozenset[BaseTIDep]
+  do_xcom_push : bool
+  doc : Optional[str | None]
+  doc_json : Optional[str | None]
+  doc_md : Optional[str | None]
+  doc_rst : Optional[str | None]
+  doc_yaml : Optional[str | None]
+  downstream_task_ids : set[str]
+  email : Optional[str | Iterable[str] | None]
+  email_on_failure : bool
+  email_on_retry : bool
+  end_date : NoneType
+  end_date : Optional[pendulum.DateTime | None]
+  execution_timeout : timedelta | None
+  executor_config : dict
+  ignore_first_depends_on_past : bool
+  inherits_from_empty_operator
+  inlets : NoneType, list
+  is_setup : bool
+  is_setup : bool
+  is_teardown : bool
+  is_teardown : bool
+  leaves
+  max_active_tis_per_dag : Optional[int | None]
+  max_active_tis_per_dagrun : Optional[int | None]
+  max_retry_delay : NoneType, timedelta
+  on_execute_callback : Optional[None | TaskStateChangeCallback | list[TaskStateChangeCallback]]
+  on_failure_callback : Optional[None | TaskStateChangeCallback | list[TaskStateChangeCallback]]
+  on_failure_fail_dagrun
+  on_failure_fail_dagrun : bool
+  on_retry_callback : Optional[None | TaskStateChangeCallback | list[TaskStateChangeCallback]]
+  on_success_callback : Optional[None | TaskStateChangeCallback | list[TaskStateChangeCallback]]
+  operator_class
+  operator_extra_links : Collection[BaseOperatorLink]
+  operator_name
+  outlets : list, NoneType
+  output
+  owner : Optional[str]
+  params : ParamsDict | dict
+  partial : Callable[..., OperatorPartial]
+  pool : NoneType, str
+  pool : str
+  pool_slots : int
+  priority_weight : int
+  queue : Optional[str]
+  resources : NoneType, Resources
+  retries : int
+  retry_delay : timedelta
+  retry_exponential_backoff : bool
+  roots
+  run_as_user : Optional[str | None]
+  shallow_copy_attrs : Sequence[str]
+  sla : Optional[timedelta | None]
+  start_date : NoneType
+  start_date : Optional[pendulum.DateTime | None]
+  subdag : Optional[DAG | None]
+  supports_lineage : bool
+  task_group : Optional[TaskGroup | None]
+  task_id
+  task_type
+  template_ext : Sequence[str]
+  template_fields : Sequence[str]
+  template_fields : list
+  template_fields_renderers : dict[str, str]
+  trigger_rule : TriggerRule
+  ui_color : str
+  ui_fgcolor : str
+  upstream_task_ids : set[str]
+  wait_for_downstream : bool
+  wait_for_past_depends_before_skipping : bool
+  weight_rule : str
+  add_inlets(inlets: Iterable[Any])
+  add_outlets(outlets: Iterable[Any])
+  as_setup()
+  as_teardown()
+  clear(start_date: datetime | None, end_date: datetime | None, upstream: bool, downstream: bool, session: Session)
+  defer()
+  dry_run() -> None
+  execute(context: Context) -> Any
+  get_dag() -> DAG | None
+  get_direct_relatives(upstream: bool) -> Iterable[DAGNode]
+  get_inlet_defs()
+  get_outlet_defs()
+  get_serialized_fields()
+  get_task_instances(start_date: datetime | None, end_date: datetime | None, session: Session) -> list[TaskInstance]
+  has_dag()
+  on_kill() -> None
+  post_execute(context: Any, result: Any)
+  pre_execute(context: Any)
+  prepare_for_execution() -> BaseOperator
+  render_template_fields(context: Context, jinja_env: jinja2.Environment | None) -> None
+  run(start_date: datetime | None, end_date: datetime | None, ignore_first_depends_on_past: bool, wait_for_past_depends_before_skipping: bool, ignore_ti_state: bool, mark_success: bool, test_mode: bool, session: Session) -> None
+  serialize_for_task_group() -> tuple[DagAttributeTypes, Any]
+  set_xcomargs_dependencies() -> None
+  unmap(resolve: None | dict[str, Any] | tuple[Context, Session]) -> BaseOperator
+  xcom_pull(context: Any, task_ids: str | list[str] | None, dag_id: str | None, key: str, include_prior_dates: bool | None) -> Any
+  xcom_push(context: Any, key: str, value: Any, execution_date: datetime | None) -> None
+}
+class "BaseOperatorLink" as airflow.models.baseoperator.BaseOperatorLink {
+  name
+  operators : ClassVar[BaseOperatorClassList]
+  get_link(operator: BaseOperator) -> str
+}
+class "BaseOperatorMeta" as airflow.models.baseoperator.BaseOperatorMeta {
+}
+class "BaseXCom" as airflow.models.xcom.BaseXCom {
+  dag_id
+  dag_run
+  dag_run_id
+  execution_date : AssociationProxy
+  key
+  map_index
+  run_id
+  task_id
+  timestamp
+  value
+  value : NoneType
+  clear() -> None
+  delete(xcoms: XCom | Iterable[XCom], session: Session) -> None
+  deserialize_value(result: XCom) -> Any
+  get_many() -> Query
+  get_one() -> Any | None
+  get_value() -> Any
+  init_on_load()
+  orm_deserialize_value() -> Any
+  serialize_value(value: Any) -> Any
+  set(key: str, value: Any) -> None
+}
+class "Connection" as airflow.models.connection.Connection {
+  EXTRA_KEY : str
+  conn_id
+  conn_id : Optional[str | None]
+  conn_type
+  conn_type : NoneType
+  description
+  description : Optional[str | None]
+  extra
+  extra : NoneType, str
+  extra_dejson
+  host
+  host : NoneType, str
+  id
+  is_encrypted
+  is_encrypted : bool
+  is_extra_encrypted
+  is_extra_encrypted : bool
+  login
+  login : str, NoneType
+  password
+  password : NoneType, str
+  port
+  port : int, NoneType
+  schema
+  schema : str, NoneType
+  debug_info()
+  from_json(value, conn_id) -> Connection
+  get_connection_from_secrets(conn_id: str) -> Connection
+  get_extra() -> str
+  get_hook()
+  get_password() -> str | None
+  get_uri() -> str
+  log_info()
+  on_db_load()
+  parse_from_uri()
+  rotate_fernet_key()
+  set_extra(value: str)
+  set_password(value: str | None)
+  test_connection()
+}
+class "DAG" as airflow.models.dag.DAG {
+  access_control
+  allow_future_exec_dates
+  auto_register : bool
+  catchup : bool
+  concurrency
+  concurrency_reached
+  dag_id
+  dagrun_timeout : Optional[timedelta | None]
+  dataset_triggers : Collection[Dataset], list
+  default_args : dict
+  default_view
+  description
+  doc_md : str, NoneType
+  edge_info : dict[str, dict[str, EdgeInfoType]]
+  end_date : NoneType
+  fail_stop : bool
+  fileloc : str
+  fileloc : str
+  filepath
+  folder
+  full_filepath
+  has_on_failure_callback
+  has_on_success_callback
+  is_paused
+  is_paused_upon_creation : Optional[bool | None]
+  is_subdag
+  jinja_environment_kwargs : Optional[dict | None]
+  last_loaded : datetime
+  last_pickled : datetime
+  latest_execution_date
+  leaves
+  max_active_runs : int
+  max_active_tasks
+  normalized_schedule_interval
+  on_failure_callback : Optional[None | DagStateChangeCallback | list[DagStateChangeCallback]]
+  on_success_callback : Optional[None | DagStateChangeCallback | list[DagStateChangeCallback]]
+  orientation : NoneType
+  owner
+  owner_links : dict
+  params
+  parent_dag : Optional[DAG | None]
+  partial : bool
+  pickle_id
+  pickle_id
+  relative_fileloc
+  render_template_as_native_obj : bool
+  roots
+  safe_dag_id
+  schedule_interval : Union, str, timedelta, ArgNotSet
+  sla_miss_callback : Optional[None | SLAMissCallback | list[SLAMissCallback]]
+  start_date : NoneType
+  subdags
+  tags : list
+  task
+  task_count
+  task_dict : dict[str, Operator]
+  task_group
+  task_group_dict
+  task_ids
+  tasks
+  tasks_upstream_of_teardowns
+  teardowns
+  template_searchpath : Optional[str | Iterable[str] | None]
+  template_undefined : type[jinja2.StrictUndefined]
+  timetable : OnceTimetable, NoneType, NullTimetable, DatasetTriggeredTimetable, ArgNotSet, DeltaDataIntervalTimetable, Timetable
+  timezone
+  user_defined_filters : NoneType, Optional[dict | None]
+  user_defined_macros : NoneType, Optional[dict | None]
+  add_task(task: Operator) -> None
+  add_tasks(tasks: Iterable[Operator]) -> None
+  bulk_sync_to_db(dags: Collection[DAG], session)
+  bulk_write_to_db(dags: Collection[DAG], processor_subdir: str | None, session)
+  clear(task_ids: Collection[str | tuple[str, int]] | None, start_date: datetime | None, end_date: datetime | None, only_failed: bool, only_running: bool, confirm_prompt: bool, include_subdags: bool, include_parentdag: bool, dag_run_state: DagRunState, dry_run: bool, session: Session, get_tis: bool, recursion_depth: int, max_recursion_depth: int | None, dag_bag: DagBag | None, exclude_task_ids: frozenset[str] | frozenset[tuple[str, int]] | None) -> int | Iterable[TaskInstance]
+  clear_dags(dags, start_date, end_date, only_failed, only_running, confirm_prompt, include_subdags, include_parentdag, dag_run_state, dry_run)
+  cli()
+  create_dagrun(state: DagRunState, execution_date: datetime | None, run_id: str | None, start_date: datetime | None, external_trigger: bool | None, conf: dict | None, run_type: DagRunType | None, session: Session, dag_hash: str | None, creating_job_id: int | None, data_interval: tuple[datetime, datetime] | None)
+  date_range(start_date: pendulum.DateTime, num: int | None, end_date: datetime | None) -> list[datetime]
+  deactivate_stale_dags(expiration_date, session)
+  deactivate_unknown_dags(active_dag_ids, session)
+  following_schedule(dttm)
+  get_active_runs()
+  get_concurrency_reached(session) -> bool
+  get_dagrun(execution_date: datetime | None, run_id: str | None, session: Session)
+  get_dagruns_between(start_date, end_date, session)
+  get_default_view()
+  get_doc_md(doc_md: str | None) -> str | None
+  get_edge_info(upstream_task_id: str, downstream_task_id: str) -> EdgeInfoType
+  get_is_active(session) -> None
+  get_is_paused(session) -> None
+  get_last_dagrun(session, include_externally_triggered)
+  get_latest_execution_date(session: Session) -> pendulum.DateTime | None
+  get_next_data_interval(dag_model: DagModel) -> DataInterval | None
+  get_num_active_runs(external_trigger, only_running, session)
+  get_num_task_instances(dag_id, run_id, task_ids, states, session) -> int
+  get_run_data_interval(run: DagRun) -> DataInterval
+  get_run_dates(start_date, end_date) -> list
+  get_serialized_fields()
+  get_task(task_id: str, include_subdags: bool) -> Operator
+  get_task_instances(start_date: datetime | None, end_date: datetime | None, state: list[TaskInstanceState] | None, session: Session) -> list[TaskInstance]
+  get_task_instances_before(base_date: datetime, num: int) -> list[TaskInstance]
+  get_template_env() -> jinja2.Environment
+  handle_callback(dagrun, success, reason, session)
+  has_dag_runs(session, include_externally_triggered) -> bool
+  has_task(task_id: str)
+  has_task_group(task_group_id: str) -> bool
+  infer_automated_data_interval(logical_date: datetime) -> DataInterval
+  is_fixed_time_schedule()
+  iter_dagrun_infos_between(earliest: pendulum.DateTime | None, latest: pendulum.DateTime) -> Iterable[DagRunInfo]
+  iter_invalid_owner_links() -> Iterator[tuple[str, str]]
+  next_dagrun_after_date(date_last_automated_dagrun: pendulum.DateTime | None)
+  next_dagrun_info(last_automated_dagrun: None | datetime | DataInterval) -> DagRunInfo | None
+  normalize_schedule(dttm)
+  param(name: str, default: Any) -> DagParam
+  partial_subset(task_ids_or_regex: str | re.Pattern | Iterable[str], include_downstream, include_upstream, include_direct_upstream)
+  pickle(session) -> DagPickle
+  pickle_info()
+  previous_schedule(dttm)
+  resolve_template_files()
+  run(start_date, end_date, mark_success, local, executor, donot_pickle, ignore_task_deps, ignore_first_depends_on_past, pool, delay_on_limit_secs, verbose, conf, rerun_failed_tasks, run_backwards, run_at_least_once, continue_on_failures, disable_retry)
+  set_dag_runs_state(state: str, session: Session, start_date: datetime | None, end_date: datetime | None, dag_ids: list[str]) -> None
+  set_dependency(upstream_task_id, downstream_task_id)
+  set_edge_info(upstream_task_id: str, downstream_task_id: str, info: EdgeInfoType)
+  set_task_group_state() -> list[TaskInstance]
+  set_task_instance_state() -> list[TaskInstance]
+  sub_dag()
+  sync_to_db(processor_subdir: str | None, session)
+  test(execution_date: datetime | None, run_conf: dict[str, Any] | None, conn_file_path: str | None, variable_file_path: str | None, session: Session) -> None
+  topological_sort(include_subdag_tasks: bool)
+  tree_view() -> None
+  validate()
+  validate_schedule_and_params()
+}
+class "DAGNode" as airflow.models.taskmixin.DAGNode {
+  dag
+  dag : Optional[DAG | None]
+  dag_id
+  downstream_list
+  downstream_task_ids : set[str]
+  end_date : pendulum.DateTime | None
+  label
+  leaves
+  log
+  node_id
+  roots
+  start_date : pendulum.DateTime | None
+  task_group : Optional[TaskGroup | None]
+  upstream_list
+  upstream_task_ids : set[str]
+  get_direct_relative_ids(upstream: bool) -> set[str]
+  get_direct_relatives(upstream: bool) -> Iterable[DAGNode]
+  has_dag() -> bool
+  serialize_for_task_group() -> tuple[DagAttributeTypes, Any]
+  set_downstream(task_or_task_list: DependencyMixin | Sequence[DependencyMixin], edge_modifier: EdgeModifier | None) -> None
+  set_upstream(task_or_task_list: DependencyMixin | Sequence[DependencyMixin], edge_modifier: EdgeModifier | None) -> None
+}
+class "DagBag" as airflow.models.dagbag.DagBag {
+  dag_folder : str | pathlib.Path | None
+  dag_ids
+  dagbag_import_error_traceback_depth : int
+  dagbag_import_error_tracebacks : bool
+  dagbag_stats
+  dags : dict[str, DAG], dict
+  dags_hash : dict[str, str]
+  dags_last_fetched : dict[str, datetime]
+  file_last_changed : dict[str, datetime]
+  has_logged : bool
+  import_errors : dict[str, str]
+  load_op_links : bool
+  read_dags_from_db : bool
+  store_serialized_dags
+  bag_dag(dag, root_dag)
+  collect_dags(dag_folder: str | pathlib.Path | None, only_if_updated: bool, include_examples: bool, safe_mode: bool)
+  collect_dags_from_db()
+  dagbag_report()
+  get_dag(dag_id, session: Session)
+  process_file(filepath, only_if_updated, safe_mode)
+  size() -> int
+  sync_to_db(processor_subdir: str | None, session: Session)
+}
+class "DagCode" as airflow.models.dagcode.DagCode {
+  fileloc
+  fileloc : str
+  fileloc_hash
+  fileloc_hash
+  last_updated
+  last_updated : datetime
+  source_code
+  source_code
+  bulk_sync_to_db(filelocs: Iterable[str], session: Session) -> None
+  code(fileloc) -> str
+  dag_fileloc_hash(full_filepath: str) -> int
+  get_code_by_fileloc(fileloc: str) -> str
+  has_dag(fileloc: str, session: Session) -> bool
+  remove_deleted_code(alive_dag_filelocs: list[str], session: Session) -> None
+  sync_to_db(session: Session) -> None
+}
+class "DagContext" as airflow.models.dag.DagContext {
+  autoregistered_dags : set[tuple[DAG, ModuleType]]
+  current_autoregister_module_name : Optional[str | None]
+  get_current_dag() -> DAG | None
+  pop_context_managed_dag() -> DAG | None
+  push_context_managed_dag(dag: DAG)
+}
+class "DagModel" as airflow.models.dag.DagModel {
+  NUM_DAGS_PER_DAGRUN_QUERY : int
+  dag_id
+  dag_owner_links
+  default_view
+  description
+  fileloc
+  has_import_errors
+  has_task_concurrency_limits
+  has_task_concurrency_limits : bool
+  is_active
+  is_paused
+  is_paused
+  is_paused_at_creation : bool
+  is_subdag
+  last_expired
+  last_parsed_time
+  last_pickled
+  max_active_runs
+  max_active_runs : int
+  max_active_tasks
+  max_active_tasks : NoneType, int
+  next_dagrun
+  next_dagrun : NoneType
+  next_dagrun_create_after
+  next_dagrun_create_after : NoneType
+  next_dagrun_data_interval
+  next_dagrun_data_interval : NoneType
+  next_dagrun_data_interval_end
+  next_dagrun_data_interval_end : NoneType
+  next_dagrun_data_interval_start
+  next_dagrun_data_interval_start : NoneType
+  owners
+  parent_dag
+  pickle_id
+  processor_subdir
+  relative_fileloc
+  root_dag_id
+  safe_dag_id
+  schedule_dataset_references
+  schedule_datasets : AssociationProxy
+  schedule_interval
+  scheduler_lock
+  tags
+  tags : list
+  task_outlet_dataset_references
+  timetable_description
+  timezone
+  calculate_dagrun_date_fields(dag: DAG, most_recent_dag_run: None | datetime | DataInterval) -> None
+  dags_needing_dagruns(session: Session) -> tuple[Query, dict[str, tuple[datetime, datetime]]]
+  deactivate_deleted_dags(alive_dag_filelocs: list[str], session)
+  get_current(dag_id, session)
+  get_dagmodel(dag_id: str, session: Session) -> DagModel | None
+  get_dataset_triggered_next_run_info() -> dict[str, int | str] | None
+  get_default_view() -> str
+  get_is_paused() -> bool
+  get_last_dagrun(session, include_externally_triggered)
+  get_paused_dag_ids(dag_ids: list[str], session: Session) -> set[str]
+  set_is_paused(is_paused: bool, including_subdags: bool, session) -> None
+}
+class "DagOwnerAttributes" as airflow.models.dag.DagOwnerAttributes {
+  dag_id
+  link
+  owner
+  get_all(session) -> dict[str, dict[str, str]]
+}
+class "DagParam" as airflow.models.param.DagParam {
+  iter_references() -> Iterable[tuple[Operator, str]]
+  resolve(context: Context) -> Any
+}
+class "DagPickle" as airflow.models.dagpickle.DagPickle {
+  created_dttm
+  dag_id
+  id
+  pickle
+  pickle
+  pickle_hash
+  pickle_hash
+}
+class "DagRun" as airflow.models.dagrun.DagRun {
+  DEFAULT_DAGRUNS_TO_EXAMINE : int
+  conf
+  conf : dict
+  creating_job_id
+  creating_job_id : Optional[int | None]
+  dag
+  dag : DAG | None
+  dag_hash
+  dag_hash : Optional[str | None]
+  dag_id
+  dag_id : Optional[str | None]
+  dag_model
+  dag_run_note
+  data_interval_end
+  data_interval_end : NoneType
+  data_interval_start
+  data_interval_start : NoneType
+  end_date
+  end_date
+  execution_date
+  execution_date : Optional[datetime | None]
+  external_trigger
+  external_trigger : Optional[bool | None]
+  id
+  id
+  is_backfill
+  last_scheduling_decision
+  last_scheduling_decision : datetime
+  log_template_id
+  logical_date
+  note : AssociationProxy
+  queued_at
+  queued_at : datetime, ArgNotSet
+  run_id
+  run_id : Optional[str | None]
+  run_type
+  run_type : Optional[str | None]
+  start_date
+  start_date : Optional[datetime | None]
+  state
+  state : NoneType
+  stats_tags
+  task_instances
+  updated_at
+  active_runs_of_dags(dag_ids: Iterable[str] | None, only_running: bool, session: Session) -> dict[str, int]
+  find(dag_id: str | list[str] | None, run_id: Iterable[str] | None, execution_date: datetime | Iterable[datetime] | None, state: DagRunState | None, external_trigger: bool | None, no_backfills: bool, run_type: DagRunType | None, session: Session, execution_start_date: datetime | None, execution_end_date: datetime | None) -> list[DagRun]
+  find_duplicate(dag_id: str, run_id: str, execution_date: datetime, session: Session) -> DagRun | None
+  generate_run_id(run_type: DagRunType, execution_date: datetime) -> str
+  get_dag() -> DAG
+  get_latest_runs(session: Session) -> list[DagRun]
+  get_log_filename_template() -> str
+  get_log_template() -> LogTemplate
+  get_previous_dagrun(state: DagRunState | None, session: Session) -> DagRun | None
+  get_previous_scheduled_dagrun(session: Session) -> DagRun | None
+  get_run(session: Session, dag_id: str, execution_date: datetime) -> DagRun | None
+  get_state()
+  get_task_instance(task_id: str, session: Session) -> TI | None
+  get_task_instances(state: Iterable[TaskInstanceState | None] | None, session: Session) -> list[TI]
+  next_dagruns_to_examine(state: DagRunState, session: Session, max_number: int | None) -> Query
+  notify_dagrun_state_changed(msg: str)
+  refresh_from_db(session: Session) -> None
+  schedule_tis(schedulable_tis: Iterable[TI], session: Session, max_tis_per_query: int | None) -> int
+  set_state(state: DagRunState)
+  task_instance_scheduling_decisions(session: Session) -> TISchedulingDecision
+  update_state(session: Session, execute_callbacks: bool) -> tuple[list[TI], DagCallbackRequest | None]
+  verify_integrity() -> None
+}
+class "DagRunNote" as airflow.models.dagrun.DagRunNote {
+  content
+  content
+  created_at
+  dag_run
+  dag_run_id
+  updated_at
+  user_id
+  user_id : NoneType
+}
+class "DagScheduleDatasetReference" as airflow.models.dataset.DagScheduleDatasetReference {
+  created_at
+  dag_id
+  dataset
+  dataset_id
+  queue_records
+  updated_at
+}
+class "DagTag" as airflow.models.dag.DagTag {
+  dag_id
+  name
+}
+class "DagWarning" as airflow.models.dagwarning.DagWarning {
+  dag_id
+  dag_id : str
+  message
+  message : str
+  timestamp
+  warning_type
+  warning_type
+  purge_inactive_dag_warnings(session: Session) -> None
+}
+class "DagWarningType" as airflow.models.dagwarning.DagWarningType {
+  name
+}
+class "DatasetDagRunQueue" as airflow.models.dataset.DatasetDagRunQueue {
+  created_at
+  dataset_id
+  target_dag_id
+}
+class "DatasetEvent" as airflow.models.dataset.DatasetEvent {
+  created_dagruns
+  dataset
+  dataset_id
+  extra
+  id
+  source_dag_id
+  source_dag_run
+  source_map_index
+  source_run_id
+  source_task_id
+  source_task_instance
+  timestamp
+  uri
+}
+class "DatasetModel" as airflow.models.dataset.DatasetModel {
+  consuming_dags
+  created_at
+  extra
+  id
+  is_orphaned
+  producing_tasks
+  updated_at
+  uri
+  from_public(obj: Dataset) -> DatasetModel
+}
+class "DbCallbackRequest" as airflow.models.db_callback_request.DbCallbackRequest {
+  callback_data
+  callback_data
+  callback_type
+  callback_type
+  created_at
+  created_at : datetime
+  id
+  priority_weight
+  priority_weight : int
+  processor_subdir
+  processor_subdir
+  get_callback_request() -> CallbackRequest
+}
+class "DependencyMixin" as airflow.models.taskmixin.DependencyMixin {
+  leaves
+  roots
+  set_downstream(other: DependencyMixin | Sequence[DependencyMixin], edge_modifier: EdgeModifier | None)
+  set_upstream(other: DependencyMixin | Sequence[DependencyMixin], edge_modifier: EdgeModifier | None)
+  update_relative(other: DependencyMixin, upstream: bool, edge_modifier: EdgeModifier | None) -> None
+}
+class "DictOfListsExpandInput" as airflow.models.expandinput.DictOfListsExpandInput {
+  value : dict[str, OperatorExpandArgument]
+  get_parse_time_mapped_ti_count() -> int
+  get_total_map_length(run_id: str) -> int
+  iter_references() -> Iterable[tuple[Operator, str]]
+  resolve(context: Context, session: Session) -> tuple[Mapping[str, Any], set[int]]
+}
+class "FernetProtocol" as airflow.models.crypto.FernetProtocol {
+  decrypt(b)
+  encrypt(b)
+}
+class "FileLoadStat" as airflow.models.dagbag.FileLoadStat {
+  dag_num : int
+  dags : str
+  duration : timedelta
+  file : str
+  task_num : int
+}
+class "ImportError" as airflow.models.errors.ImportError {
+  filename
+  id
+  stacktrace
+  timestamp
+}
+class "<color:red>InconsistentDataInterval</color>" as airflow.models.dag.InconsistentDataInterval {
+}
+class "LazyXComAccess" as airflow.models.xcom.LazyXComAccess {
+  build_from_xcom_query(query: Query) -> LazyXComAccess
+}
+class "ListOfDictsExpandInput" as airflow.models.expandinput.ListOfDictsExpandInput {
+  value : Union
+  get_parse_time_mapped_ti_count() -> int
+  get_total_map_length(run_id: str) -> int
+  iter_references() -> Iterable[tuple[Operator, str]]
+  resolve(context: Context, session: Session) -> tuple[Mapping[str, Any], set[int]]
+}
+class "Log" as airflow.models.log.Log {
+  dag_id
+  dag_id
+  dttm
+  dttm : datetime
+  event
+  event
+  execution_date
+  execution_date
+  extra
+  extra : NoneType
+  id
+  map_index
+  map_index
+  owner
+  owner : NoneType
+  task_id
+  task_id
+}
+class "LogTemplate" as airflow.models.tasklog.LogTemplate {
+  created_at
+  elasticsearch_id
+  filename
+  id
+}
+class "MapXComArg" as airflow.models.xcom_arg.MapXComArg {
+  arg
+  callables : Sequence
+  get_task_map_length(run_id: str) -> int | None
+  iter_references() -> Iterator[tuple[Operator, str]]
+  map(f: Callable[[Any], Any]) -> MapXComArg
+  resolve(context: Context, session: Session) -> Any
+}
+class "MappedArgument" as airflow.models.expandinput.MappedArgument {
+  get_task_map_length(run_id: str) -> int | None
+  iter_references() -> Iterable[tuple[Operator, str]]
+  resolve(context: Context) -> Any
+}
+class "MappedOperator" as airflow.models.mappedoperator.MappedOperator {
+  HIDE_ATTRS_FROM_UI : ClassVar[frozenset[str]]
+  dag : DAG | None
+  depends_on_past
+  deps : frozenset[BaseTIDep]
+  doc
+  doc_json
+  doc_md
+  doc_rst
+  doc_yaml
+  email
+  end_date : pendulum.DateTime | None
+  execution_timeout
+  executor_config
+  expand_input : Union
+  ignore_first_depends_on_past
+  inherits_from_empty_operator
+  inlets
+  is_setup : bool
+  is_teardown : bool
+  leaves
+  max_active_tis_per_dag
+  max_active_tis_per_dagrun
+  max_retry_delay
+  on_execute_callback
+  on_failure_callback
+  on_failure_fail_dagrun : bool
+  on_retry_callback
+  on_success_callback
+  operator_class : type[BaseOperator] | dict[str, Any]
+  operator_extra_links : Collection[BaseOperatorLink]
+  operator_name
+  outlets
+  output
+  owner
+  params : ParamsDict | dict
+  partial_kwargs : dict[str, Any]
+  pool
+  pool_slots
+  priority_weight
+  queue
+  resources
+  retries
+  retry_delay
+  retry_exponential_backoff
+  roots
+  run_as_user
+  sla
+  start_date : pendulum.DateTime | None
+  subdag : NoneType
+  supports_lineage : bool
+  task_group : TaskGroup | None
+  task_id : str
+  task_type
+  template_ext : Sequence[str]
+  template_fields : Collection[str]
+  template_fields_renderers : dict[str, str]
+  trigger_rule
+  ui_color : str
+  ui_fgcolor : str
+  wait_for_downstream
+  wait_for_past_depends_before_skipping
+  weight_rule
+  deps_for(operator_class: type[BaseOperator]) -> frozenset[BaseTIDep]
+  get_dag() -> DAG | None
+  get_mapped_ti_count(run_id: str) -> int
+  get_parse_time_mapped_ti_count() -> int
+  get_serialized_fields()
+  iter_mapped_dependencies() -> Iterator[Operator]
+  prepare_for_execution() -> MappedOperator
+  render_template_fields(context: Context, jinja_env: jinja2.Environment | None) -> None
+  serialize_for_task_group() -> tuple[DagAttributeTypes, Any]
+  unmap(resolve: None | Mapping[str, Any] | tuple[Context, Session]) -> BaseOperator
+}
+class "<color:red>NotFullyPopulated</color>" as airflow.models.expandinput.NotFullyPopulated {
+  missing : set[str]
+}
+class "<color:red>NotMapped</color>" as airflow.models.abstractoperator.NotMapped {
+}
+class "NullFernet" as airflow.models.crypto.NullFernet {
+  is_encrypted : bool
+  decrypt(b)
+  encrypt(b)
+}
+class "OperatorPartial" as airflow.models.mappedoperator.OperatorPartial {
+  kwargs : dict[str, Any]
+  operator_class : type[BaseOperator]
+  params : ParamsDict | dict
+  expand() -> MappedOperator
+  expand_kwargs(kwargs: OperatorExpandKwargsArgument) -> MappedOperator
+}
+class "Param" as airflow.models.param.Param {
+  CLASS_IDENTIFIER : str
+  description : Optional[str | None]
+  has_value
+  schema : dict
+  value : NoneType, ArgNotSet
+  deserialize(data: dict[str, Any], version: int) -> Param
+  dump() -> dict
+  resolve(value: Any, suppress_exception: bool) -> Any
+  serialize() -> dict
+}
+class "ParamsDict" as airflow.models.param.ParamsDict {
+  suppress_exception : bool
+  deserialize(data: dict, version: int) -> ParamsDict
+  dump() -> dict[str, Any]
+  get_param(key: str) -> Param
+  items()
+  serialize() -> dict[str, Any]
+  update() -> None
+  validate() -> dict[str, Any]
+  values()
+}
+class "PlainXComArg" as airflow.models.xcom_arg.PlainXComArg {
+  key : str
+  operator : Union
+  get_task_map_length(run_id: str) -> int | None
+  iter_references() -> Iterator[tuple[Operator, str]]
+  map(f: Callable[[Any], Any]) -> MapXComArg
+  resolve(context: Context, session: Session) -> Any
+  zip() -> ZipXComArg
+}
+class "Pool" as airflow.models.pool.Pool {
+  DEFAULT_POOL_NAME : str
+  description
+  id
+  pool
+  slots
+  create_or_update_pool(name: str, slots: int, description: str, session: Session) -> Pool
+  delete_pool(name: str, session: Session) -> Pool
+  get_default_pool(session: Session) -> Pool | None
+  get_pool(pool_name: str, session: Session) -> Pool | None
+  get_pools(session: Session) -> list[Pool]
+  is_default_pool(id: int, session: Session) -> bool
+  occupied_slots(session: Session) -> int
+  open_slots(session: Session) -> float
+  queued_slots(session: Session) -> int
+  running_slots(session: Session) -> int
+  scheduled_slots(session: Session) -> int
+  slots_stats() -> dict[str, PoolStats]
+  to_json() -> dict[str, Any]
+}
+class "PoolStats" as airflow.models.pool.PoolStats {
+  open : int
+  queued : int
+  running : int
+  total : int
+}
+class "RenderedTaskInstanceFields" as airflow.models.renderedtifields.RenderedTaskInstanceFields {
+  dag_id
+  dag_id
+  dag_run
+  execution_date : AssociationProxy
+  k8s_pod_yaml
+  k8s_pod_yaml
+  map_index
+  map_index
+  rendered_fields
+  rendered_fields
+  run_id
+  run_id
+  task
+  task_id
+  task_id
+  task_instance
+  ti
+  delete_old_records(task_id: str, dag_id: str, num_to_keep: int, session: Session) -> None
+  get_k8s_pod_yaml(ti: TaskInstance, session: Session) -> dict | None
+  get_templated_fields(ti: TaskInstance, session: Session) -> dict | None
+  write(session: Session)
+}
+class "SerializedDagModel" as airflow.models.serialized_dag.SerializedDagModel {
+  dag
+  dag_hash
+  dag_hash : str
+  dag_id
+  dag_id
+  dag_model
+  dag_runs
+  data
+  fileloc
+  fileloc
+  fileloc_hash
+  fileloc_hash
+  last_updated
+  last_updated : datetime
+  load_op_links : bool
+  processor_subdir
+  processor_subdir : Optional[str | None]
+  bulk_sync_to_db(dags: list[DAG], processor_subdir: str | None, session: Session) -> None
+  get(dag_id: str, session: Session) -> SerializedDagModel | None
+  get_dag(dag_id: str, session: Session) -> SerializedDAG | None
+  get_dag_dependencies(session: Session) -> dict[str, list[DagDependency]]
+  get_last_updated_datetime(dag_id: str, session: Session) -> datetime | None
+  get_latest_version_hash(dag_id: str, session: Session) -> str | None
+  get_latest_version_hash_and_updated_datetime(dag_id: str) -> tuple[str, datetime] | None
+  get_max_last_updated_datetime(session: Session) -> datetime | None
+  has_dag(dag_id: str, session: Session) -> bool
+  read_all_dags(session: Session) -> dict[str, SerializedDAG]
+  remove_dag(dag_id: str, session: Session) -> None
+  remove_deleted_dags(alive_dag_filelocs: list[str], processor_subdir: str | None, session: Session) -> None
+  write_dag(dag: DAG, min_update_interval: int | None, processor_subdir: str | None, session: Session) -> bool
+}
+class "SimpleTaskInstance" as airflow.models.taskinstance.SimpleTaskInstance {
+  dag_id : str
+  end_date : datetime | None
+  executor_config
+  key : TaskInstanceKey
+  map_index : int
+  pool : str
+  priority_weight : Optional[int | None]
+  queue : str
+  run_as_user : Optional[str | None]
+  run_id : str
+  start_date : datetime | None
+  state : str
+  task_id : str
+  try_number : int
+  as_dict()
+  from_dict(obj_dict: dict) -> SimpleTaskInstance
+  from_ti(ti: TaskInstance) -> SimpleTaskInstance
+}
+class "SkipMixin" as airflow.models.skipmixin.SkipMixin {
+  skip(dag_run: DagRun | DagRunPydantic, execution_date: DateTime, tasks: Iterable[DAGNode], session: Session, map_index: int)
+  skip_all_except(ti: TaskInstance | TaskInstancePydantic, branch_task_ids: None | str | Iterable[str])
+}
+class "SlaMiss" as airflow.models.slamiss.SlaMiss {
+  dag_id
+  description
+  email_sent
+  execution_date
+  notification_sent
+  task_id
+  timestamp
+}
+class "TISchedulingDecision" as airflow.models.dagrun.TISchedulingDecision {
+  changed_tis : bool
+  finished_tis : list[TI]
+  schedulable_tis : list[TI]
+  tis : list[TI]
+  unfinished_tis : list[TI]
+}
+class "TaskFail" as airflow.models.taskfail.TaskFail {
+  dag_id
+  dag_id
+  dag_run
+  duration
+  duration : int, NoneType
+  end_date
+  end_date
+  id
+  map_index
+  map_index
+  run_id
+  run_id
+  start_date
+  start_date
+  task_id
+  task_id
+}
+class "TaskInstance" as airflow.models.taskinstance.TaskInstance {
+  dag_id
+  dag_id
+  dag_model
+  dag_run
+  dag_run
+  duration
+  duration : NoneType
+  end_date
+  end_date : datetime, NoneType
+  execution_date : AssociationProxy
+  executor_config
+  executor_config
+  external_executor_id
+  external_executor_id : Optional[str | None]
+  hostname
+  hostname : str
+  is_premature
+  is_trigger_log_context : bool
+  job_id
+  job_id : Optional[str | None]
+  key
+  log_url
+  map_index
+  map_index : int
+  mark_success_url
+  max_tries
+  max_tries
+  next_kwargs
+  next_kwargs : NoneType
+  next_method
+  next_method : NoneType
+  next_try_number
+  note : AssociationProxy
+  operator
+  operator
+  pid
+  pid : NoneType
+  pool
+  pool
+  pool_slots
+  pool_slots
+  prev_attempted_tries
+  previous_start_date_success
+  previous_ti
+  previous_ti_success
+  priority_weight
+  priority_weight
+  queue
+  queue
+  queued_by_job_id
+  queued_by_job_id
+  queued_dttm
+  queued_dttm : datetime
+  raw : bool
+  rendered_task_instance_fields
+  run_as_user
+  run_id
+  run_id : Optional[str | None]
+  start_date
+  start_date
+  state
+  state : UP_FOR_RETRY, NoneType, str | None, UP_FOR_RESCHEDULE, RUNNING, DEFERRED, SKIPPED, SUCCESS, FAILED
+  stats_tags
+  task : Union
+  task : Union
+  task_id
+  task_id
+  task_instance_note
+  test_mode : bool
+  trigger
+  trigger_id
+  trigger_id
+  trigger_timeout
+  trigger_timeout : NoneType
+  triggerer_job : AssociationProxy
+  try_number
+  try_number : int
+  unixname
+  unixname : NoneType
+  updated_at
+  are_dependencies_met(dep_context: DepContext | None, session: Session, verbose: bool) -> bool
+  are_dependents_done(session: Session) -> bool
+  check_and_change_state_before_execution(verbose: bool, ignore_all_deps: bool, ignore_depends_on_past: bool, wait_for_past_depends_before_skipping: bool, ignore_task_deps: bool, ignore_ti_state: bool, mark_success: bool, test_mode: bool, job_id: str | None, pool: str | None, external_executor_id: str | None, session: Session) -> bool
+  clear_db_references(session)
+  clear_next_method_args() -> None
+  clear_xcom_data(session: Session) -> None
+  command_as_list(mark_success, ignore_all_deps, ignore_task_deps, ignore_depends_on_past, wait_for_past_depends_before_skipping, ignore_ti_state, local, pickle_id: int | None, raw, job_id, pool, cfg_path) -> list[str]
+  current_state(session: Session) -> str
+  dry_run() -> None
+  email_alert(exception, task: BaseOperator) -> None
+  emit_state_change_metric(new_state: TaskInstanceState)
+  error(session: Session) -> None
+  filter_for_tis(tis: Iterable[TaskInstance | TaskInstanceKey]) -> BooleanClauseList | None
+  generate_command(dag_id: str, task_id: str, run_id: str, mark_success: bool, ignore_all_deps: bool, ignore_depends_on_past: bool, wait_for_past_depends_before_skipping: bool, ignore_task_deps: bool, ignore_ti_state: bool, local: bool, pickle_id: int | None, file_path: PurePath | str | None, raw: bool, job_id: str | None, pool: str | None, cfg_path: str | None, map_index: int) -> list[str]
+  get_dagrun(session: Session) -> DagRun
+  get_email_subject_content(exception: BaseException, task: BaseOperator | None) -> tuple[str, str, str]
+  get_failed_dep_statuses(dep_context: DepContext | None, session: Session)
+  get_num_running_task_instances(session: Session, same_dagrun) -> int
+  get_previous_dagrun(state: DagRunState | None, session: Session | None) -> DagRun | None
+  get_previous_execution_date(state: DagRunState | None, session: Session) -> pendulum.DateTime | None
+  get_previous_start_date(state: DagRunState | None, session: Session) -> pendulum.DateTime | None
+  get_previous_ti(state: DagRunState | None, session: Session) -> TaskInstance | None
+  get_relevant_upstream_map_indexes(upstream: Operator, ti_count: int | None) -> int | range | None
+  get_rendered_k8s_spec(session: Session)
+  get_rendered_template_fields(session: Session) -> None
+  get_template_context(session: Session | None, ignore_param_exceptions: bool) -> Context
+  get_truncated_error_traceback(error: BaseException, truncate_to: Callable) -> TracebackType | None
+  handle_failure(error: None | str | Exception | KeyboardInterrupt, test_mode: bool | None, context: Context | None, force_fail: bool, session: Session) -> None
+  init_on_load() -> None
+  init_run_context(raw: bool) -> None
+  insert_mapping(run_id: str, task: Operator, map_index: int) -> dict[str, Any]
+  is_eligible_to_retry()
+  next_retry_datetime()
+  overwrite_params_with_dag_run_conf(params, dag_run)
+  ready_for_retry() -> bool
+  refresh_from_db(session: Session, lock_for_update: bool) -> None
+  refresh_from_task(task: Operator, pool_override: str | None) -> None
+  render_k8s_pod_yaml() -> dict | None
+  render_templates(context: Context | None) -> Operator
+  run(verbose: bool, ignore_all_deps: bool, ignore_depends_on_past: bool, wait_for_past_depends_before_skipping: bool, ignore_task_deps: bool, ignore_ti_state: bool, mark_success: bool, test_mode: bool, job_id: str | None, pool: str | None, session: Session) -> None
+  schedule_downstream_tasks(session: Session, max_tis_per_query: int | None)
+  set_duration() -> None
+  set_state(state: str | None, session: Session) -> bool
+  ti_selector_condition(vals: Collection[str | tuple[str, int]]) -> ColumnOperators
+  xcom_pull(task_ids: str | Iterable[str] | None, dag_id: str | None, key: str, include_prior_dates: bool, session: Session) -> Any
+  xcom_push(key: str, value: Any, execution_date: datetime | None, session: Session) -> None
+}
+class "TaskInstanceKey" as airflow.models.taskinstancekey.TaskInstanceKey {
+  dag_id : str
+  key
+  map_index : int
+  primary
+  reduced
+  run_id : str
+  task_id : str
+  try_number : int
+  with_try_number(try_number: int) -> TaskInstanceKey
+}
+class "TaskInstanceNote" as airflow.models.taskinstance.TaskInstanceNote {
+  content
+  content
+  created_at
+  dag_id
+  map_index
+  run_id
+  task_id
+  task_instance
+  updated_at
+  user_id
+  user_id : NoneType
+}
+class "TaskMap" as airflow.models.taskmap.TaskMap {
+  dag_id
+  dag_id : str
+  keys
+  keys : list[Any] | None
+  length
+  length : int
+  map_index
+  map_index : int
+  run_id
+  run_id : str
+  task_id
+  task_id : str
+  variant
+  from_task_instance_xcom(ti: TaskInstance, value: Collection) -> TaskMap
+}
+class "TaskMapVariant" as airflow.models.taskmap.TaskMapVariant {
+  name
+}
+class "TaskMixin" as airflow.models.taskmixin.TaskMixin {
+}
+class "TaskOutletDatasetReference" as airflow.models.dataset.TaskOutletDatasetReference {
+  created_at
+  dag_id
+  dataset
+  dataset_id
+  task_id
+  updated_at
+}
+class "TaskReschedule" as airflow.models.taskreschedule.TaskReschedule {
+  dag_id
+  dag_id
+  dag_run
+  duration
+  duration
+  end_date
+  end_date : datetime
+  execution_date : AssociationProxy
+  id
+  map_index
+  map_index : int
+  reschedule_date
+  reschedule_date : datetime
+  run_id
+  run_id : str
+  start_date
+  start_date : datetime
+  task_id
+  task_id
+  try_number
+  try_number : int
+  find_for_task_instance(task_instance: TaskInstance, session: Session, try_number: int | None) -> list[TaskReschedule]
+  query_for_task_instance(task_instance: TaskInstance, descending: bool, session: Session, try_number: int | None) -> Query
+}
+class "TaskReturnCode" as airflow.models.taskinstance.TaskReturnCode {
+  name
+}
+class "Trigger" as airflow.models.trigger.Trigger {
+  classpath
+  classpath : str
+  created_date
+  created_date : datetime
+  id
+  kwargs
+  kwargs : dict[str, Any]
+  task_instance
+  triggerer_id
+  triggerer_job
+  assign_unassigned(triggerer_id, capacity, session: Session) -> None
+  bulk_fetch(ids: Iterable[int], session: Session) -> dict[int, Trigger]
+  clean_unused(session: Session) -> None
+  from_object(trigger: BaseTrigger) -> Trigger
+  get_sorted_triggers(capacity, alive_triggerer_ids, session)
+  ids_for_triggerer(triggerer_id, session: Session) -> list[int]
+  submit_event(trigger_id, event, session: Session) -> None
+  submit_failure(trigger_id, exc, session: Session) -> None
+}
+class "Variable" as airflow.models.variable.Variable {
+  description
+  description : NoneType
+  id
+  is_encrypted
+  is_encrypted : bool
+  key
+  key : NoneType
+  val
+  val : NoneType
+  check_for_write_conflict(key: str) -> None
+  delete(key: str, session: Session) -> int
+  get(key: str, default_var: Any, deserialize_json: bool) -> Any
+  get_val()
+  get_variable_from_secrets(key: str) -> str | None
+  on_db_load()
+  rotate_fernet_key()
+  set(key: str, value: Any, description: str | None, serialize_json: bool, session: Session) -> None
+  set_val(value)
+  setdefault(key, default, description, deserialize_json)
+  update(key: str, value: Any, serialize_json: bool, session: Session) -> None
+}
+class "XComArg" as airflow.models.xcom_arg.XComArg {
+  leaves
+  roots
+  apply_upstream_relationship(op: Operator, arg: Any)
+  get_task_map_length(run_id: str) -> int | None
+  iter_xcom_references(arg: Any) -> Iterator[tuple[Operator, str]]
+  map(f: Callable[[Any], Any]) -> MapXComArg
+  resolve(context: Context, session: Session) -> Any
+  set_downstream(task_or_task_list: DependencyMixin | Sequence[DependencyMixin], edge_modifier: EdgeModifier | None)
+  set_upstream(task_or_task_list: DependencyMixin | Sequence[DependencyMixin], edge_modifier: EdgeModifier | None)
+  zip() -> ZipXComArg
+}
+class "ZipXComArg" as airflow.models.xcom_arg.ZipXComArg {
+  args : Sequence[XComArg]
+  fillvalue : ArgNotSet
+  get_task_map_length(run_id: str) -> int | None
+  iter_references() -> Iterator[tuple[Operator, str]]
+  resolve(context: Context, session: Session) -> Any
+}
+class "_LazyXComAccessIterator" as airflow.models.xcom._LazyXComAccessIterator {
+}
+class "_MapResult" as airflow.models.xcom_arg._MapResult {
+  callables : Sequence
+  value : Sequence | dict
+}
+class "_PartialDescriptor" as airflow.models.baseoperator._PartialDescriptor {
+  class_method : Optional[ClassMethodDescriptorType | None]
+}
+class "_UnfinishedStates" as airflow.models.dagrun.DagRun.update_state._UnfinishedStates {
+  should_schedule
+  tis : Sequence[TI]
+  calculate(unfinished_tis: Sequence[TI]) -> _UnfinishedStates
+  recalculate() -> _UnfinishedStates
+}
+class "_ZipResult" as airflow.models.xcom_arg._ZipResult {
+  fillvalue : ArgNotSet
+  values : Sequence[Sequence | dict]
+}
+airflow.models.abstractoperator.AbstractOperator --|> airflow.models.taskmixin.DAGNode
+airflow.models.baseoperator.BaseOperator --|> airflow.models.abstractoperator.AbstractOperator
+airflow.models.mappedoperator.MappedOperator --|> airflow.models.abstractoperator.AbstractOperator
+airflow.models.taskmixin.DAGNode --|> airflow.models.taskmixin.DependencyMixin
+airflow.models.taskmixin.TaskMixin --|> airflow.models.taskmixin.DependencyMixin
+airflow.models.xcom_arg.MapXComArg --|> airflow.models.xcom_arg.XComArg
+airflow.models.xcom_arg.PlainXComArg --|> airflow.models.xcom_arg.XComArg
+airflow.models.xcom_arg.XComArg --|> airflow.models.taskmixin.DependencyMixin
+airflow.models.xcom_arg.ZipXComArg --|> airflow.models.xcom_arg.XComArg
+airflow.models.dag.DAG --* airflow.models.dag.DAG : default_args
+airflow.models.dag.DAG --* airflow.models.dagpickle.DagPickle : pickle
+airflow.models.dag.DAG --* airflow.models.dagrun.DagRun : dag
+airflow.models.dagrun.DagRun --* airflow.models.taskinstance.TaskInstance : dag_run
+airflow.models.dagrun.DagRun --* airflow.models.taskinstance.TaskInstance : dag_run
+airflow.models.param.ParamsDict --* airflow.models.dag.DAG : params
+airflow.models.taskinstance.TaskInstance --* airflow.models.renderedtifields.RenderedTaskInstanceFields : ti
+airflow.models.xcom_arg.XComArg --* airflow.models.xcom_arg.MapXComArg : arg
+@enduml

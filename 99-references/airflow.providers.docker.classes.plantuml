@@ -1,0 +1,95 @@
+@startuml classes
+set namespaceSeparator none
+class "DockerHook" as docker.hooks.docker.DockerHook {
+  api_client
+  client_created
+  conn_name_attr : str
+  conn_type : str
+  default_conn_name : str
+  docker_conn_id : str | None
+  hook_name : str
+  construct_tls_config(ca_cert: str | None, client_cert: str | None, client_key: str | None, verify: bool, assert_hostname: str | bool | None, ssl_version: str | None) -> TLSConfig | bool
+  get_conn() -> APIClient
+  get_connection_form_widgets() -> dict[str, Any]
+  get_ui_field_behaviour() -> dict[str, Any]
+}
+class "DockerOperator" as docker.operators.docker.DockerOperator {
+  api_version : NoneType
+  auto_remove : str
+  cap_add : NoneType
+  cli
+  command : NoneType
+  container : Optional[dict]
+  container_name : NoneType
+  cpus : float
+  device_requests : NoneType
+  dns : NoneType
+  dns_search : NoneType
+  docker_conn_id : NoneType
+  docker_url : str
+  entrypoint : NoneType
+  env_file : NoneType
+  environment : dict
+  extra_hosts : NoneType
+  force_pull : bool
+  hook
+  host_tmp_dir : NoneType
+  hostname : NoneType
+  image
+  ipc_mode : NoneType
+  log_opts_max_file : NoneType
+  log_opts_max_size : NoneType
+  mem_limit : NoneType
+  mount_tmp_dir : bool
+  mounts : list
+  network_mode : NoneType
+  port_bindings : dict
+  privileged : bool
+  retrieve_output : bool
+  retrieve_output_path : NoneType
+  shm_size : NoneType
+  skip_on_exit_code : NoneType, list
+  template_ext : Sequence[str]
+  template_fields : Sequence[str]
+  template_fields_renderers : dict
+  timeout
+  tls_ca_cert : NoneType
+  tls_client_cert : NoneType
+  tls_client_key : NoneType
+  tls_hostname : NoneType
+  tls_ssl_version : NoneType
+  tls_verify : bool
+  tmp_dir : str
+  tty : bool
+  user : NoneType
+  working_dir : NoneType
+  xcom_all : bool
+  execute(context: Context) -> list[str] | str | None
+  format_command(command: list[str] | str | None) -> list[str] | str | None
+  get_hook() -> DockerHook
+  on_kill() -> None
+  unpack_environment_variables(env_str: str) -> dict
+}
+class "DockerSwarmOperator" as docker.operators.docker_swarm.DockerSwarmOperator {
+  configs : NoneType
+  enable_logging : bool
+  mode : NoneType
+  networks : NoneType
+  placement : NoneType
+  secrets : NoneType
+  service : NoneType
+  execute(context: Context) -> None
+  on_kill() -> None
+}
+class "_DockerDecoratedOperator" as docker.decorators.docker._DockerDecoratedOperator {
+  command
+  custom_operator_name : str
+  expect_airflow : bool
+  pickling_library
+  python_command : str
+  template_fields : Sequence[str]
+  execute(context: Context)
+  generate_command()
+  get_python_source()
+}
+@enduml

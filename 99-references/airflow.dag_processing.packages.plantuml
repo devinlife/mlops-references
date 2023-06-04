@@ -1,0 +1,10 @@
+@startuml packages
+set namespaceSeparator none
+package "airflow.dag_processing" as airflow.dag_processing {
+}
+package "airflow.dag_processing.manager" as airflow.dag_processing.manager {
+}
+package "airflow.dag_processing.processor" as airflow.dag_processing.processor {
+}
+airflow.dag_processing.manager --> airflow.dag_processing.processor
+@enduml

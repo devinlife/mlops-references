@@ -1,0 +1,230 @@
+@startuml packages
+set namespaceSeparator none
+package "airflow.models" as airflow.models {
+}
+package "airflow.models.abstractoperator" as airflow.models.abstractoperator {
+}
+package "airflow.models.base" as airflow.models.base {
+}
+package "airflow.models.baseoperator" as airflow.models.baseoperator {
+}
+package "airflow.models.connection" as airflow.models.connection {
+}
+package "airflow.models.crypto" as airflow.models.crypto {
+}
+package "airflow.models.dag" as airflow.models.dag {
+}
+package "airflow.models.dagbag" as airflow.models.dagbag {
+}
+package "airflow.models.dagcode" as airflow.models.dagcode {
+}
+package "airflow.models.dagparam" as airflow.models.dagparam {
+}
+package "airflow.models.dagpickle" as airflow.models.dagpickle {
+}
+package "airflow.models.dagrun" as airflow.models.dagrun {
+}
+package "airflow.models.dagwarning" as airflow.models.dagwarning {
+}
+package "airflow.models.dataset" as airflow.models.dataset {
+}
+package "airflow.models.db_callback_request" as airflow.models.db_callback_request {
+}
+package "airflow.models.errors" as airflow.models.errors {
+}
+package "airflow.models.expandinput" as airflow.models.expandinput {
+}
+package "airflow.models.log" as airflow.models.log {
+}
+package "airflow.models.mappedoperator" as airflow.models.mappedoperator {
+}
+package "airflow.models.operator" as airflow.models.operator {
+}
+package "airflow.models.param" as airflow.models.param {
+}
+package "airflow.models.pool" as airflow.models.pool {
+}
+package "airflow.models.renderedtifields" as airflow.models.renderedtifields {
+}
+package "airflow.models.serialized_dag" as airflow.models.serialized_dag {
+}
+package "airflow.models.skipmixin" as airflow.models.skipmixin {
+}
+package "airflow.models.slamiss" as airflow.models.slamiss {
+}
+package "airflow.models.taskfail" as airflow.models.taskfail {
+}
+package "airflow.models.taskinstance" as airflow.models.taskinstance {
+}
+package "airflow.models.taskinstancekey" as airflow.models.taskinstancekey {
+}
+package "airflow.models.tasklog" as airflow.models.tasklog {
+}
+package "airflow.models.taskmap" as airflow.models.taskmap {
+}
+package "airflow.models.taskmixin" as airflow.models.taskmixin {
+}
+package "airflow.models.taskreschedule" as airflow.models.taskreschedule {
+}
+package "airflow.models.trigger" as airflow.models.trigger {
+}
+package "airflow.models.variable" as airflow.models.variable {
+}
+package "airflow.models.xcom" as airflow.models.xcom {
+}
+package "airflow.models.xcom_arg" as airflow.models.xcom_arg {
+}
+airflow.models --> airflow.models.base
+airflow.models --> airflow.models.baseoperator
+airflow.models --> airflow.models.connection
+airflow.models --> airflow.models.dag
+airflow.models --> airflow.models.dagbag
+airflow.models --> airflow.models.dagpickle
+airflow.models --> airflow.models.dagrun
+airflow.models --> airflow.models.db_callback_request
+airflow.models --> airflow.models.errors
+airflow.models --> airflow.models.log
+airflow.models --> airflow.models.mappedoperator
+airflow.models --> airflow.models.operator
+airflow.models --> airflow.models.param
+airflow.models --> airflow.models.pool
+airflow.models --> airflow.models.renderedtifields
+airflow.models --> airflow.models.skipmixin
+airflow.models --> airflow.models.slamiss
+airflow.models --> airflow.models.taskfail
+airflow.models --> airflow.models.taskinstance
+airflow.models --> airflow.models.taskreschedule
+airflow.models --> airflow.models.trigger
+airflow.models --> airflow.models.variable
+airflow.models --> airflow.models.xcom
+airflow.models.abstractoperator --> airflow.models.baseoperator
+airflow.models.abstractoperator --> airflow.models.dag
+airflow.models.abstractoperator --> airflow.models.expandinput
+airflow.models.abstractoperator --> airflow.models.mappedoperator
+airflow.models.abstractoperator --> airflow.models.operator
+airflow.models.abstractoperator --> airflow.models.taskinstance
+airflow.models.abstractoperator --> airflow.models.taskmixin
+airflow.models.baseoperator --> airflow.models
+airflow.models.baseoperator --> airflow.models.abstractoperator
+airflow.models.baseoperator --> airflow.models.dag
+airflow.models.baseoperator --> airflow.models.mappedoperator
+airflow.models.baseoperator --> airflow.models.param
+airflow.models.baseoperator --> airflow.models.pool
+airflow.models.baseoperator --> airflow.models.taskinstance
+airflow.models.baseoperator --> airflow.models.taskinstancekey
+airflow.models.baseoperator --> airflow.models.taskmixin
+airflow.models.baseoperator --> airflow.models.xcom_arg
+airflow.models.connection --> airflow.models.base
+airflow.models.connection --> airflow.models.crypto
+airflow.models.dag --> airflow.models.abstractoperator
+airflow.models.dag --> airflow.models.base
+airflow.models.dag --> airflow.models.baseoperator
+airflow.models.dag --> airflow.models.dagbag
+airflow.models.dag --> airflow.models.dagcode
+airflow.models.dag --> airflow.models.dagpickle
+airflow.models.dag --> airflow.models.dagrun
+airflow.models.dag --> airflow.models.dataset
+airflow.models.dag --> airflow.models.mappedoperator
+airflow.models.dag --> airflow.models.operator
+airflow.models.dag --> airflow.models.param
+airflow.models.dag --> airflow.models.serialized_dag
+airflow.models.dag --> airflow.models.slamiss
+airflow.models.dag --> airflow.models.taskinstance
+airflow.models.dagbag --> airflow.models.dag
+airflow.models.dagbag --> airflow.models.serialized_dag
+airflow.models.dagcode --> airflow.models.base
+airflow.models.dagparam --> airflow.models.param
+airflow.models.dagpickle --> airflow.models.base
+airflow.models.dagpickle --> airflow.models.dag
+airflow.models.dagrun --> airflow.models.abstractoperator
+airflow.models.dagrun --> airflow.models.base
+airflow.models.dagrun --> airflow.models.dag
+airflow.models.dagrun --> airflow.models.expandinput
+airflow.models.dagrun --> airflow.models.mappedoperator
+airflow.models.dagrun --> airflow.models.operator
+airflow.models.dagrun --> airflow.models.taskinstance
+airflow.models.dagrun --> airflow.models.tasklog
+airflow.models.dagwarning --> airflow.models.base
+airflow.models.dagwarning --> airflow.models.dag
+airflow.models.dataset --> airflow.models.base
+airflow.models.db_callback_request --> airflow.models.base
+airflow.models.errors --> airflow.models.base
+airflow.models.expandinput --> airflow.models.operator
+airflow.models.expandinput --> airflow.models.xcom_arg
+airflow.models.log --> airflow.models.base
+airflow.models.mappedoperator --> airflow.models.abstractoperator
+airflow.models.mappedoperator --> airflow.models.baseoperator
+airflow.models.mappedoperator --> airflow.models.dag
+airflow.models.mappedoperator --> airflow.models.expandinput
+airflow.models.mappedoperator --> airflow.models.operator
+airflow.models.mappedoperator --> airflow.models.param
+airflow.models.mappedoperator --> airflow.models.pool
+airflow.models.mappedoperator --> airflow.models.xcom_arg
+airflow.models.operator --> airflow.models.abstractoperator
+airflow.models.operator --> airflow.models.baseoperator
+airflow.models.operator --> airflow.models.mappedoperator
+airflow.models.param --> airflow.models.dag
+airflow.models.param --> airflow.models.dagrun
+airflow.models.param --> airflow.models.operator
+airflow.models.pool --> airflow.models.base
+airflow.models.pool --> airflow.models.taskinstance
+airflow.models.renderedtifields --> airflow.models.base
+airflow.models.renderedtifields --> airflow.models.dagrun
+airflow.models.renderedtifields --> airflow.models.taskinstance
+airflow.models.serialized_dag --> airflow.models.base
+airflow.models.serialized_dag --> airflow.models.dag
+airflow.models.serialized_dag --> airflow.models.dagcode
+airflow.models.serialized_dag --> airflow.models.dagrun
+airflow.models.skipmixin --> airflow.models.baseoperator
+airflow.models.skipmixin --> airflow.models.dagrun
+airflow.models.skipmixin --> airflow.models.mappedoperator
+airflow.models.skipmixin --> airflow.models.operator
+airflow.models.skipmixin --> airflow.models.taskinstance
+airflow.models.skipmixin --> airflow.models.taskmixin
+airflow.models.skipmixin --> airflow.models.xcom
+airflow.models.slamiss --> airflow.models.base
+airflow.models.taskfail --> airflow.models.base
+airflow.models.taskinstance --> airflow.models
+airflow.models.taskinstance --> airflow.models.abstractoperator
+airflow.models.taskinstance --> airflow.models.base
+airflow.models.taskinstance --> airflow.models.baseoperator
+airflow.models.taskinstance --> airflow.models.dag
+airflow.models.taskinstance --> airflow.models.dagbag
+airflow.models.taskinstance --> airflow.models.dagrun
+airflow.models.taskinstance --> airflow.models.dataset
+airflow.models.taskinstance --> airflow.models.log
+airflow.models.taskinstance --> airflow.models.mappedoperator
+airflow.models.taskinstance --> airflow.models.operator
+airflow.models.taskinstance --> airflow.models.param
+airflow.models.taskinstance --> airflow.models.renderedtifields
+airflow.models.taskinstance --> airflow.models.taskfail
+airflow.models.taskinstance --> airflow.models.taskinstancekey
+airflow.models.taskinstance --> airflow.models.taskmap
+airflow.models.taskinstance --> airflow.models.taskreschedule
+airflow.models.taskinstance --> airflow.models.trigger
+airflow.models.taskinstance --> airflow.models.xcom
+airflow.models.tasklog --> airflow.models.base
+airflow.models.taskmap --> airflow.models.base
+airflow.models.taskmap --> airflow.models.taskinstance
+airflow.models.taskmixin --> airflow.models.baseoperator
+airflow.models.taskmixin --> airflow.models.dag
+airflow.models.taskmixin --> airflow.models.mappedoperator
+airflow.models.taskmixin --> airflow.models.operator
+airflow.models.taskreschedule --> airflow.models.base
+airflow.models.taskreschedule --> airflow.models.operator
+airflow.models.taskreschedule --> airflow.models.taskinstance
+airflow.models.trigger --> airflow.models.base
+airflow.models.trigger --> airflow.models.taskinstance
+airflow.models.variable --> airflow.models.base
+airflow.models.variable --> airflow.models.crypto
+airflow.models.xcom --> airflow.models.base
+airflow.models.xcom --> airflow.models.taskinstancekey
+airflow.models.xcom_arg --> airflow.models.abstractoperator
+airflow.models.xcom_arg --> airflow.models.dag
+airflow.models.xcom_arg --> airflow.models.mappedoperator
+airflow.models.xcom_arg --> airflow.models.operator
+airflow.models.xcom_arg --> airflow.models.taskinstance
+airflow.models.xcom_arg --> airflow.models.taskmap
+airflow.models.xcom_arg --> airflow.models.taskmixin
+airflow.models.xcom_arg --> airflow.models.xcom
+@enduml

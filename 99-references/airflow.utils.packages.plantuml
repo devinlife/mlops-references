@@ -1,0 +1,202 @@
+@startuml packages
+set namespaceSeparator none
+package "airflow.utils" as airflow.utils {
+}
+package "airflow.utils.airflow_flask_app" as airflow.utils.airflow_flask_app {
+}
+package "airflow.utils.cli" as airflow.utils.cli {
+}
+package "airflow.utils.cli_action_loggers" as airflow.utils.cli_action_loggers {
+}
+package "airflow.utils.cli_app_builder" as airflow.utils.cli_app_builder {
+}
+package "airflow.utils.code_utils" as airflow.utils.code_utils {
+}
+package "airflow.utils.compression" as airflow.utils.compression {
+}
+package "airflow.utils.configuration" as airflow.utils.configuration {
+}
+package "airflow.utils.context" as airflow.utils.context {
+}
+package "airflow.utils.dag_cycle_tester" as airflow.utils.dag_cycle_tester {
+}
+package "airflow.utils.dag_edges" as airflow.utils.dag_edges {
+}
+package "airflow.utils.dag_parsing_context" as airflow.utils.dag_parsing_context {
+}
+package "airflow.utils.dates" as airflow.utils.dates {
+}
+package "airflow.utils.db" as airflow.utils.db {
+}
+package "airflow.utils.db_cleanup" as airflow.utils.db_cleanup {
+}
+package "airflow.utils.decorators" as airflow.utils.decorators {
+}
+package "airflow.utils.deprecation_tools" as airflow.utils.deprecation_tools {
+}
+package "airflow.utils.docs" as airflow.utils.docs {
+}
+package "airflow.utils.dot_renderer" as airflow.utils.dot_renderer {
+}
+package "airflow.utils.edgemodifier" as airflow.utils.edgemodifier {
+}
+package "airflow.utils.email" as airflow.utils.email {
+}
+package "airflow.utils.entry_points" as airflow.utils.entry_points {
+}
+package "airflow.utils.event_scheduler" as airflow.utils.event_scheduler {
+}
+package "airflow.utils.file" as airflow.utils.file {
+}
+package "airflow.utils.hashlib_wrapper" as airflow.utils.hashlib_wrapper {
+}
+package "airflow.utils.helpers" as airflow.utils.helpers {
+}
+package "airflow.utils.json" as airflow.utils.json {
+}
+package "airflow.utils.jwt_signer" as airflow.utils.jwt_signer {
+}
+package "airflow.utils.log" as airflow.utils.log {
+}
+package "airflow.utils.log.action_logger" as airflow.utils.log.action_logger {
+}
+package "airflow.utils.log.colored_log" as airflow.utils.log.colored_log {
+}
+package "airflow.utils.log.file_processor_handler" as airflow.utils.log.file_processor_handler {
+}
+package "airflow.utils.log.file_task_handler" as airflow.utils.log.file_task_handler {
+}
+package "airflow.utils.log.json_formatter" as airflow.utils.log.json_formatter {
+}
+package "airflow.utils.log.log_reader" as airflow.utils.log.log_reader {
+}
+package "airflow.utils.log.logging_mixin" as airflow.utils.log.logging_mixin {
+}
+package "airflow.utils.log.non_caching_file_handler" as airflow.utils.log.non_caching_file_handler {
+}
+package "airflow.utils.log.secrets_masker" as airflow.utils.log.secrets_masker {
+}
+package "airflow.utils.log.task_handler_with_custom_formatter" as airflow.utils.log.task_handler_with_custom_formatter {
+}
+package "airflow.utils.log.timezone_aware" as airflow.utils.log.timezone_aware {
+}
+package "airflow.utils.log.trigger_handler" as airflow.utils.log.trigger_handler {
+}
+package "airflow.utils.mixins" as airflow.utils.mixins {
+}
+package "airflow.utils.module_loading" as airflow.utils.module_loading {
+}
+package "airflow.utils.net" as airflow.utils.net {
+}
+package "airflow.utils.operator_helpers" as airflow.utils.operator_helpers {
+}
+package "airflow.utils.operator_resources" as airflow.utils.operator_resources {
+}
+package "airflow.utils.orm_event_handlers" as airflow.utils.orm_event_handlers {
+}
+package "airflow.utils.platform" as airflow.utils.platform {
+}
+package "airflow.utils.process_utils" as airflow.utils.process_utils {
+}
+package "airflow.utils.python_virtualenv" as airflow.utils.python_virtualenv {
+}
+package "airflow.utils.retries" as airflow.utils.retries {
+}
+package "airflow.utils.scheduler_health" as airflow.utils.scheduler_health {
+}
+package "airflow.utils.serve_logs" as airflow.utils.serve_logs {
+}
+package "airflow.utils.session" as airflow.utils.session {
+}
+package "airflow.utils.setup_teardown" as airflow.utils.setup_teardown {
+}
+package "airflow.utils.sqlalchemy" as airflow.utils.sqlalchemy {
+}
+package "airflow.utils.state" as airflow.utils.state {
+}
+package "airflow.utils.strings" as airflow.utils.strings {
+}
+package "airflow.utils.task_group" as airflow.utils.task_group {
+}
+package "airflow.utils.timeout" as airflow.utils.timeout {
+}
+package "airflow.utils.timezone" as airflow.utils.timezone {
+}
+package "airflow.utils.trigger_rule" as airflow.utils.trigger_rule {
+}
+package "airflow.utils.types" as airflow.utils.types {
+}
+package "airflow.utils.weekday" as airflow.utils.weekday {
+}
+package "airflow.utils.weight_rule" as airflow.utils.weight_rule {
+}
+package "airflow.utils.xcom" as airflow.utils.xcom {
+}
+package "airflow.utils.yaml" as airflow.utils.yaml {
+}
+airflow.utils.cli --> airflow.utils
+airflow.utils.cli --> airflow.utils.db
+airflow.utils.cli --> airflow.utils.log.non_caching_file_handler
+airflow.utils.cli --> airflow.utils.platform
+airflow.utils.cli --> airflow.utils.session
+airflow.utils.cli_action_loggers --> airflow.utils
+airflow.utils.cli_action_loggers --> airflow.utils.session
+airflow.utils.configuration --> airflow.utils.platform
+airflow.utils.context --> airflow.utils.types
+airflow.utils.dates --> airflow.utils
+airflow.utils.db --> airflow.utils
+airflow.utils.db --> airflow.utils.session
+airflow.utils.db --> airflow.utils.sqlalchemy
+airflow.utils.db_cleanup --> airflow.utils
+airflow.utils.db_cleanup --> airflow.utils.db
+airflow.utils.db_cleanup --> airflow.utils.helpers
+airflow.utils.db_cleanup --> airflow.utils.session
+airflow.utils.db_cleanup --> airflow.utils.sqlalchemy
+airflow.utils.deprecation_tools --> airflow.utils.types
+airflow.utils.dot_renderer --> airflow.utils.dag_edges
+airflow.utils.dot_renderer --> airflow.utils.state
+airflow.utils.dot_renderer --> airflow.utils.task_group
+airflow.utils.edgemodifier --> airflow.utils.task_group
+airflow.utils.helpers --> airflow.utils.context
+airflow.utils.helpers --> airflow.utils.module_loading
+airflow.utils.helpers --> airflow.utils.types
+airflow.utils.json --> airflow.utils.timezone
+airflow.utils.log --> airflow.utils.deprecation_tools
+airflow.utils.log.colored_log --> airflow.utils.log.timezone_aware
+airflow.utils.log.file_processor_handler --> airflow.utils.helpers
+airflow.utils.log.file_processor_handler --> airflow.utils.log.logging_mixin
+airflow.utils.log.file_processor_handler --> airflow.utils.log.non_caching_file_handler
+airflow.utils.log.file_task_handler --> airflow.utils.context
+airflow.utils.log.file_task_handler --> airflow.utils.helpers
+airflow.utils.log.file_task_handler --> airflow.utils.jwt_signer
+airflow.utils.log.file_task_handler --> airflow.utils.log.logging_mixin
+airflow.utils.log.file_task_handler --> airflow.utils.log.non_caching_file_handler
+airflow.utils.log.file_task_handler --> airflow.utils.session
+airflow.utils.log.file_task_handler --> airflow.utils.state
+airflow.utils.log.json_formatter --> airflow.utils.helpers
+airflow.utils.log.log_reader --> airflow.utils.helpers
+airflow.utils.log.log_reader --> airflow.utils.log.logging_mixin
+airflow.utils.log.log_reader --> airflow.utils.session
+airflow.utils.log.log_reader --> airflow.utils.state
+airflow.utils.log.logging_mixin --> airflow.utils.log.file_task_handler
+airflow.utils.log.task_handler_with_custom_formatter --> airflow.utils.helpers
+airflow.utils.log.trigger_handler --> airflow.utils.log.file_task_handler
+airflow.utils.mixins --> airflow.utils.context
+airflow.utils.module_loading --> airflow.utils.types
+airflow.utils.operator_helpers --> airflow.utils.context
+airflow.utils.orm_event_handlers --> airflow.utils.sqlalchemy
+airflow.utils.process_utils --> airflow.utils.platform
+airflow.utils.python_virtualenv --> airflow.utils.decorators
+airflow.utils.python_virtualenv --> airflow.utils.process_utils
+airflow.utils.scheduler_health --> airflow.utils.net
+airflow.utils.scheduler_health --> airflow.utils.session
+airflow.utils.serve_logs --> airflow.utils.docs
+airflow.utils.serve_logs --> airflow.utils.jwt_signer
+airflow.utils.sqlalchemy --> airflow.utils.sqlalchemy
+airflow.utils.sqlalchemy --> airflow.utils.timezone
+airflow.utils.task_group --> airflow.utils.edgemodifier
+airflow.utils.task_group --> airflow.utils.helpers
+airflow.utils.timeout --> airflow.utils.log.logging_mixin
+airflow.utils.timeout --> airflow.utils.platform
+airflow.utils.yaml --> airflow.utils.yaml
+@enduml

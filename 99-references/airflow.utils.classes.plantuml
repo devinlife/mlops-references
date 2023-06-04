@@ -1,0 +1,465 @@
+@startuml classes
+set namespaceSeparator none
+class "AirflowApp" as airflow.utils.airflow_flask_app.AirflowApp {
+  api_auth : list[Any]
+  appbuilder : AirflowAppBuilder
+  dag_bag : DagBag
+}
+class "<color:red>AirflowContextDeprecationWarning</color>" as airflow.utils.context.AirflowContextDeprecationWarning {
+}
+class "AirflowJsonProvider" as airflow.utils.json.AirflowJsonProvider {
+  ensure_ascii : bool
+  sort_keys : bool
+  dumps(obj)
+  loads(s: str | bytes)
+}
+class "AirflowParsingContext" as airflow.utils.dag_parsing_context.AirflowParsingContext {
+  dag_id : str | None
+  task_id : str | None
+}
+class "ArgNotSet" as airflow.utils.types.ArgNotSet {
+}
+class "BadReferenceConfig" as airflow.utils.db.check_bad_references.BadReferenceConfig {
+  bad_rows_func : Callable
+  join_tables : list[str]
+  ref_table : str
+}
+class "ColorMode" as airflow.utils.cli.ColorMode {
+  AUTO : str
+  OFF : str
+  ON : str
+}
+class "CommitProhibitorGuard" as airflow.utils.sqlalchemy.CommitProhibitorGuard {
+  expected_commit : bool
+  expected_commit : bool
+  session
+  commit()
+}
+class "ConnectionAccessor" as airflow.utils.context.ConnectionAccessor {
+  var : Optional[Any]
+  get(key: str, default_conn: Any) -> Any
+}
+class "Context" as airflow.utils.context.Context {
+  items()
+  keys() -> KeysView[str]
+  values()
+}
+class "CpuResource" as airflow.utils.operator_resources.CpuResource {
+}
+class "CreateTableAs" as airflow.utils.db_cleanup.CreateTableAs {
+  name
+  query
+}
+class "CustomTTYColoredFormatter" as airflow.utils.log.colored_log.CustomTTYColoredFormatter {
+  format(record: LogRecord) -> str
+}
+class "DBLocks" as airflow.utils.db.DBLocks {
+  name
+}
+class "DagRunState" as airflow.utils.state.DagRunState {
+  name
+}
+class "DagRunType" as airflow.utils.types.DagRunType {
+  name
+  from_run_id(run_id: str) -> DagRunType
+  generate_run_id(logical_date: datetime) -> str
+}
+class "DiskResource" as airflow.utils.operator_resources.DiskResource {
+}
+class "DropTriggerLogsFilter" as airflow.utils.log.trigger_handler.DropTriggerLogsFilter {
+  filter(record)
+}
+class "EdgeInfoType" as airflow.utils.types.EdgeInfoType {
+  label : str | None
+}
+class "EdgeModifier" as airflow.utils.edgemodifier.EdgeModifier {
+  label : Optional[str | None]
+  leaves
+  roots
+  add_edge_info(dag, upstream_id: str, downstream_id: str)
+  set_downstream(other: DependencyMixin | Sequence[DependencyMixin], edge_modifier: EdgeModifier | None)
+  set_upstream(other: DependencyMixin | Sequence[DependencyMixin], edge_modifier: EdgeModifier | None)
+  update_relative(other: DependencyMixin, upstream: bool, edge_modifier: EdgeModifier | None) -> None
+}
+class "EventScheduler" as airflow.utils.event_scheduler.EventScheduler {
+  call_regular_interval(delay: float, action: Callable, arguments, kwargs)
+}
+class "ExecutorConfigType" as airflow.utils.sqlalchemy.ExecutorConfigType {
+  cache_ok : bool
+  bind_processor(dialect)
+  compare_values(x, y)
+  result_processor(dialect, coltype)
+}
+class "ExtendedJSON" as airflow.utils.sqlalchemy.ExtendedJSON {
+  cache_ok : bool
+  impl : Text
+  db_supports_json()
+  load_dialect_impl(dialect) -> TypeEngine
+  process_bind_param(value, dialect)
+  process_result_value(value, dialect)
+}
+class "ExternalLoggingMixin" as airflow.utils.log.logging_mixin.ExternalLoggingMixin {
+  log_name
+  supports_external_link
+  get_external_log_url(task_instance, try_number) -> str
+}
+class "FileProcessorHandler" as airflow.utils.log.file_processor_handler.FileProcessorHandler {
+  base_log_folder
+  dag_dir
+  filename_jinja_template : NoneType, Template
+  filename_template : NoneType
+  handler : NoneType
+  close()
+  emit(record)
+  flush()
+  set_context(filename)
+}
+class "FileTaskHandler" as airflow.utils.log.file_task_handler.FileTaskHandler {
+  ctx_task_deferred : bool
+  handler : Optional[logging.FileHandler | None]
+  local_base : str
+  maintain_propagate : bool
+  trigger_should_wrap : bool
+  add_triggerer_suffix(full_path, job_id)
+  close()
+  emit(record)
+  flush()
+  read(task_instance, try_number, metadata)
+  set_context(ti: TaskInstance) -> None | SetContextPropagate
+}
+class "GpuResource" as airflow.utils.operator_resources.GpuResource {
+}
+class "HealthServer" as airflow.utils.scheduler_health.HealthServer {
+  do_GET()
+}
+class "Interval" as airflow.utils.sqlalchemy.Interval {
+  attr_keys : dict
+  cache_ok : bool
+  impl : Text
+  process_bind_param(value, dialect)
+  process_result_value(value, dialect)
+}
+class "JSONFormatter" as airflow.utils.log.json_formatter.JSONFormatter {
+  extras : dict, NoneType
+  json_fields : list, NoneType
+  format(record)
+  usesTime()
+}
+class "JWTSigner" as airflow.utils.jwt_signer.JWTSigner {
+  generate_signed_token(extra_payload: dict[str, Any]) -> str
+  verify_token(token: str) -> dict[str, Any]
+}
+class "KeywordParameters" as airflow.utils.operator_helpers.KeywordParameters {
+  determine(func: Callable[..., Any], args: Collection[Any], kwargs: Mapping[str, Any]) -> KeywordParameters
+  serializing() -> Mapping[str, Any]
+  unpacking() -> Mapping[str, Any]
+}
+class "LocalQueueHandler" as airflow.utils.log.trigger_handler.LocalQueueHandler {
+  emit(record: logging.LogRecord) -> None
+}
+class "LogType" as airflow.utils.log.file_task_handler.LogType {
+  name
+}
+class "LoggingMixin" as airflow.utils.log.logging_mixin.LoggingMixin {
+  log
+  logger() -> Logger
+}
+class "MappedTaskGroup" as airflow.utils.task_group.MappedTaskGroup {
+  children
+  get_mapped_ti_count(run_id: str) -> int
+  get_parse_time_mapped_ti_count() -> int
+  iter_mapped_dependencies() -> Iterator[Operator]
+}
+class "MultiprocessingStartMethodMixin" as airflow.utils.mixins.MultiprocessingStartMethodMixin {
+}
+class "NonCachingFileHandler" as airflow.utils.log.non_caching_file_handler.NonCachingFileHandler {
+}
+class "NonCachingRotatingFileHandler" as airflow.utils.log.non_caching_file_handler.NonCachingRotatingFileHandler {
+}
+class "RamResource" as airflow.utils.operator_resources.RamResource {
+}
+class "RedactedIO" as airflow.utils.log.secrets_masker.RedactedIO {
+  target : PacifyFlushWrapper, TextIOWrapper
+  close() -> None
+  fileno() -> int
+  flush() -> None
+  isatty() -> bool
+  read(n: int) -> str
+  readable() -> bool
+  readline(n: int) -> str
+  readlines(n: int) -> list[str]
+  seek(offset: int, whence: int) -> int
+  seekable() -> bool
+  tell() -> int
+  truncate(s: int | None) -> int
+  writable() -> bool
+  write(s: str) -> int
+  writelines(lines) -> None
+}
+class "RedirectStdHandler" as airflow.utils.log.logging_mixin.RedirectStdHandler {
+  stream
+}
+class "ResolveMixin" as airflow.utils.mixins.ResolveMixin {
+  iter_references() -> typing.Iterable[tuple[Operator, str]]
+  resolve(context: Context) -> typing.Any
+}
+class "Resource" as airflow.utils.operator_resources.Resource {
+  name
+  qty
+  units_str
+  to_dict()
+}
+class "Resources" as airflow.utils.operator_resources.Resources {
+  cpus
+  disk
+  gpus
+  ram
+  from_dict(resources_dict: dict)
+  to_dict()
+}
+class "SecretsMasker" as airflow.utils.log.secrets_masker.SecretsMasker {
+  ALREADY_FILTERED_FLAG : str
+  MAX_RECURSION_DEPTH : int
+  patterns : set
+  patterns : set[str]
+  replacer
+  replacer : Optional[re.Pattern | None]
+  add_mask(secret: str | dict | Iterable, name: str | None)
+  filter(record) -> bool
+  redact(item: Redactable, name: str | None, max_depth: int | None) -> Redacted
+}
+class "SetContextPropagate" as airflow.utils.log.logging_mixin.SetContextPropagate {
+  name
+}
+class "SetupTeardownContext" as airflow.utils.setup_teardown.SetupTeardownContext {
+  active : bool
+  context_map : dict[Operator | tuple[Operator], list[Operator]]
+  get_context_managed_setup_task() -> Operator | list[Operator] | None
+  get_context_managed_teardown_task() -> Operator | list[Operator] | None
+  pop_context_managed_setup_task() -> Operator | list[Operator] | None
+  pop_context_managed_teardown_task() -> Operator | list[Operator] | None
+  push_context_managed_setup_task(task: Operator | list[Operator])
+  push_context_managed_teardown_task(task: Operator | list[Operator])
+  push_setup_teardown_task(operator: Operator | list[Operator])
+  set_work_task_roots_and_leaves()
+  update_context_map(operator)
+}
+class "StandaloneGunicornApplication" as airflow.utils.serve_logs.StandaloneGunicornApplication {
+  application
+  options : list
+  load()
+  load_config()
+}
+class "State" as airflow.utils.state.State {
+  DEFERRED : DEFERRED
+  FAILED : FAILED
+  NONE : NoneType
+  QUEUED : QUEUED
+  REMOVED : REMOVED
+  RESTARTING : RESTARTING
+  RUNNING : RUNNING
+  SCHEDULED : SCHEDULED
+  SHUTDOWN : SHUTDOWN
+  SKIPPED : SKIPPED
+  SUCCESS : SUCCESS
+  UPSTREAM_FAILED : UPSTREAM_FAILED
+  UP_FOR_RESCHEDULE : UP_FOR_RESCHEDULE
+  UP_FOR_RETRY : UP_FOR_RETRY
+  dag_states : tuple[DagRunState, ...]
+  failed_states : frozenset[TaskInstanceState]
+  finished : frozenset[TaskInstanceState]
+  finished_dr_states : frozenset[DagRunState]
+  state_color : dict[TaskInstanceState | None, str]
+  success_states : frozenset[TaskInstanceState]
+  task_states : tuple[TaskInstanceState | None, ...]
+  terminating_states : frozenset
+  unfinished : frozenset[TaskInstanceState | None]
+  unfinished_dr_states : frozenset[DagRunState]
+  color(state)
+  color_fg(state)
+}
+class "StreamLogWriter" as airflow.utils.log.logging_mixin.StreamLogWriter {
+  closed
+  encoding : NoneType
+  level
+  logger
+  close()
+  flush()
+  isatty()
+  write(message)
+}
+class "TaskGroup" as airflow.utils.task_group.TaskGroup {
+  children : dict[str, DAGNode]
+  dag : NoneType
+  default_args : DAG, dict
+  downstream_group_ids : set[str | None]
+  downstream_join_id
+  downstream_task_ids : set
+  group_id
+  is_root
+  label
+  leaves
+  node_id
+  parent_group
+  prefix_group_id : bool
+  roots
+  tooltip : str
+  ui_color : str
+  ui_fgcolor : str
+  upstream_group_ids : set[str | None]
+  upstream_join_id
+  upstream_task_ids : set
+  used_group_ids : set
+  used_group_ids : set[str | None]
+  add(task: DAGNode) -> None
+  child_id(label)
+  create_root(dag: DAG) -> TaskGroup
+  get_child_by_label(label: str) -> DAGNode
+  get_leaves() -> Generator[BaseOperator, None, None]
+  get_roots() -> Generator[BaseOperator, None, None]
+  get_task_group_dict() -> dict[str, TaskGroup]
+  has_task(task: BaseOperator) -> bool
+  iter_mapped_task_groups() -> Iterator[MappedTaskGroup]
+  iter_tasks() -> Iterator[AbstractOperator]
+  serialize_for_task_group() -> tuple[DagAttributeTypes, Any]
+  topological_sort(_include_subdag_tasks: bool)
+  update_relative(other: DependencyMixin, upstream: bool, edge_modifier: EdgeModifier | None) -> None
+}
+class "TaskGroupContext" as airflow.utils.task_group.TaskGroupContext {
+  get_current_task_group(dag: DAG | None) -> TaskGroup | None
+  pop_context_managed_task_group() -> TaskGroup | None
+  push_context_managed_task_group(task_group: TaskGroup)
+}
+class "TaskHandlerWithCustomFormatter" as airflow.utils.log.task_handler_with_custom_formatter.TaskHandlerWithCustomFormatter {
+  prefix_jinja_template : NoneType, Template
+  prefix_jinja_template : Optional[Template | None]
+  set_context(ti) -> None
+}
+class "TaskInstanceState" as airflow.utils.state.TaskInstanceState {
+  name
+}
+class "TaskLogReader" as airflow.utils.log.log_reader.TaskLogReader {
+  STREAM_LOOP_SLEEP_SECONDS : float
+  log_handler
+  supports_external_link
+  supports_read
+  read_log_chunks(ti: TaskInstance, try_number: int | None, metadata) -> tuple[list[tuple[tuple[str, str]]], dict[str, str]]
+  read_log_stream(ti: TaskInstance, try_number: int | None, metadata: dict) -> Iterator[str]
+  render_log_filename(ti: TaskInstance, try_number: int | None) -> str
+}
+class "TimeoutPosix" as airflow.utils.timeout.TimeoutPosix {
+  error_message : str
+  seconds : int
+  handle_timeout(signum, frame)
+}
+class "TimeoutWindows" as airflow.utils.timeout.TimeoutWindows {
+  error_message : str
+  seconds : int
+  handle_timeout()
+}
+class "TimezoneAware" as airflow.utils.log.timezone_aware.TimezoneAware {
+  default_msec_format : str
+  default_time_format : str
+  default_tz_format : str
+  formatTime(record, datefmt)
+}
+class "TriggerMetadataFilter" as airflow.utils.log.trigger_handler.TriggerMetadataFilter {
+  filter(record)
+}
+class "TriggerRule" as airflow.utils.trigger_rule.TriggerRule {
+  name
+  all_triggers() -> set[str]
+  is_valid(trigger_rule: str) -> bool
+}
+class "TriggererHandlerWrapper" as airflow.utils.log.trigger_handler.TriggererHandlerWrapper {
+  base_handler
+  handlers : dict[int, FileTaskHandler]
+  trigger_should_queue : bool
+  close()
+  close_one(trigger_id)
+  emit(record)
+  flush()
+  handle(record)
+}
+class "UtcDateTime" as airflow.utils.sqlalchemy.UtcDateTime {
+  cache_ok : bool
+  impl : TIMESTAMP
+  load_dialect_impl(dialect)
+  process_bind_param(value, dialect)
+  process_result_value(value, dialect)
+}
+class "VariableAccessor" as airflow.utils.context.VariableAccessor {
+  var : Optional[Any], object
+  get(key, default: Any) -> Any
+}
+class "WebEncoder" as airflow.utils.json.WebEncoder {
+  default(o: Any) -> Any
+}
+class "WeekDay" as airflow.utils.weekday.WeekDay {
+  name
+  convert(day: str | WeekDay) -> int
+  get_weekday_number(week_day_str: str)
+  validate_week_day(week_day: str | WeekDay | Iterable[str] | Iterable[WeekDay]) -> set[int]
+}
+class "WeightRule" as airflow.utils.weight_rule.WeightRule {
+  name
+  all_weight_rules() -> set[str]
+  is_valid(weight_rule: str) -> bool
+}
+class "XComDecoder" as airflow.utils.json.XComDecoder {
+  object_hook(dct: dict) -> object
+  orm_object_hook(dct: dict) -> object
+}
+class "XComEncoder" as airflow.utils.json.XComEncoder {
+  default(o: object) -> Any
+  encode(o: Any) -> str
+}
+class "_GlobIgnoreRule" as airflow.utils.file._GlobIgnoreRule {
+  include : Optional[bool | None]
+  pattern : Pattern
+  raw_pattern : str
+  relative_to : Optional[Path | None]
+  compile(pattern: str, _, definition_file: Path) -> _IgnoreRule | None
+  match(path: Path, rules: list[_IgnoreRule]) -> bool
+}
+class "_IgnoreRule" as airflow.utils.file._IgnoreRule {
+  compile(pattern: str, base_dir: Path, definition_file: Path) -> _IgnoreRule | None
+  match(path: Path, rules: list[_IgnoreRule]) -> bool
+}
+class "_RegexpIgnoreRule" as airflow.utils.file._RegexpIgnoreRule {
+  base_dir : Path
+  pattern : Pattern
+  compile(pattern: str, base_dir: Path, definition_file: Path) -> _IgnoreRule | None
+  match(path: Path, rules: list[_IgnoreRule]) -> bool
+}
+class "_TableConfig" as airflow.utils.db_cleanup._TableConfig {
+  extra_columns : Optional[list[str] | None]
+  keep_last : bool
+  keep_last_filters : Optional[Any | None]
+  keep_last_group_by : Optional[Any | None]
+  orm_model : Base
+  readable_config
+  recency_column
+  recency_column_name : str
+  table_name : str
+}
+class "_autostacklevel_warn" as airflow.utils.decorators._autostacklevel_warn {
+  warnings
+  warn(message, category, stacklevel, source)
+}
+airflow.utils.log.colored_log.CustomTTYColoredFormatter --|> airflow.utils.log.timezone_aware.TimezoneAware
+airflow.utils.operator_resources.CpuResource --|> airflow.utils.operator_resources.Resource
+airflow.utils.operator_resources.DiskResource --|> airflow.utils.operator_resources.Resource
+airflow.utils.operator_resources.GpuResource --|> airflow.utils.operator_resources.Resource
+airflow.utils.operator_resources.RamResource --|> airflow.utils.operator_resources.Resource
+airflow.utils.task_group.MappedTaskGroup --|> airflow.utils.task_group.TaskGroup
+airflow.utils.timeout.TimeoutPosix --|> airflow.utils.log.logging_mixin.LoggingMixin
+airflow.utils.timeout.TimeoutWindows --|> airflow.utils.log.logging_mixin.LoggingMixin
+airflow.utils.log.file_task_handler.FileTaskHandler --* airflow.utils.log.trigger_handler.TriggererHandlerWrapper : base_handler
+airflow.utils.log.non_caching_file_handler.NonCachingFileHandler --* airflow.utils.log.file_processor_handler.FileProcessorHandler : handler
+airflow.utils.log.non_caching_file_handler.NonCachingFileHandler --* airflow.utils.log.file_task_handler.FileTaskHandler : handler
+airflow.utils.operator_resources.CpuResource --* airflow.utils.operator_resources.Resources : cpus
+airflow.utils.operator_resources.DiskResource --* airflow.utils.operator_resources.Resources : disk
+airflow.utils.operator_resources.GpuResource --* airflow.utils.operator_resources.Resources : gpus
+airflow.utils.operator_resources.RamResource --* airflow.utils.operator_resources.Resources : ram
+@enduml

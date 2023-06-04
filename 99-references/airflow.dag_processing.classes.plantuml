@@ -1,0 +1,90 @@
+@startuml classes
+set namespaceSeparator none
+class "DagFileProcessor" as airflow.dag_processing.processor.DagFileProcessor {
+  UNIT_TEST_MODE : bool
+  dag_ids : list[str] | None
+  dag_warnings : set[tuple[str, str]]
+  execute_callbacks(dagbag: DagBag, callback_requests: list[CallbackRequest], session: Session) -> None
+  execute_callbacks_without_dag(callback_requests: list[CallbackRequest], session: Session) -> None
+  manage_slas(dag_folder, dag_id: str, session: Session) -> None
+  process_file(file_path: str, callback_requests: list[CallbackRequest], pickle_dags: bool, session: Session) -> tuple[int, int]
+  save_dag_to_db(dags: dict[str, DAG], dag_directory: str, pickle_dags: bool, session)
+  update_dag_warnings() -> None
+  update_import_errors(file_last_changed: dict[str, datetime], import_errors: dict[str, str], session: Session) -> None
+}
+class "DagFileProcessorAgent" as airflow.dag_processing.manager.DagFileProcessorAgent {
+  all_files_processed
+  done
+  end()
+  get_callbacks_pipe() -> MultiprocessingConnection
+  heartbeat() -> None
+  run_single_parsing_loop() -> None
+  start() -> None
+  terminate()
+  wait_until_finished() -> None
+}
+class "DagFileProcessorManager" as airflow.dag_processing.manager.DagFileProcessorManager {
+  DEFAULT_FILE_STAT : DagFileStat
+  dag_dir_list_interval : int
+  file_paths
+  heartbeat : Callable[[], None]
+  last_dag_dir_refresh_time : NoneType, datetime
+  last_deactivate_stale_dags_time : NoneType, datetime
+  last_stat_print_time : int
+  parsing_cleanup_interval : int
+  print_stats_interval : int
+  stale_dag_threshold : int
+  standalone_dag_processor : bool
+  waitables : dict[Any, MultiprocessingConnection | DagFileProcessorProcess]
+  add_new_file_path_to_queue()
+  clear_nonexistent_import_errors(file_paths: list[str] | None, session)
+  collect_results() -> None
+  deactivate_stale_dags(last_parsed: dict[str, datetime | None], dag_directory: str, stale_dag_threshold: int, session: Session)
+  emit_metrics()
+  end()
+  get_all_pids() -> list[int]
+  get_dag_directory() -> str
+  get_last_dag_count(file_path) -> int | None
+  get_last_error_count(file_path) -> int | None
+  get_last_finish_time(file_path) -> datetime | None
+  get_last_runtime(file_path) -> float | None
+  get_pid(file_path) -> int | None
+  get_run_count(file_path) -> int
+  get_start_time(file_path) -> datetime | None
+  max_runs_reached()
+  prepare_file_path_queue()
+  register_exit_signals()
+  set_file_paths(new_file_paths)
+  start()
+  start_new_processes()
+  terminate()
+  wait_until_finished()
+}
+class "DagFileProcessorProcess" as airflow.dag_processing.processor.DagFileProcessorProcess {
+  done
+  exit_code
+  file_path
+  pid
+  result
+  start_time
+  waitable_handle
+  import_modules(file_path: str | Iterable[str])
+  kill() -> None
+  start() -> None
+  terminate(sigkill: bool) -> None
+}
+class "DagFileStat" as airflow.dag_processing.manager.DagFileStat {
+  import_errors : int
+  last_duration : timedelta | None
+  last_finish_time : datetime | None
+  num_dags : int
+  run_count : int
+}
+class "DagParsingSignal" as airflow.dag_processing.manager.DagParsingSignal {
+  name
+}
+class "DagParsingStat" as airflow.dag_processing.manager.DagParsingStat {
+  all_files_processed : bool
+  done : bool
+}
+@enduml
